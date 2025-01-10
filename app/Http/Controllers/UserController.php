@@ -15,9 +15,9 @@ class UserController extends Controller
         return response()->json($users);
     }
 
-    public function show($id)
+    public function show($uuid)
     {
-        $user = User::find($id);
+        $user = User::find($uuid);
 
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
