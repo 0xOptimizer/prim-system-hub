@@ -52,9 +52,9 @@ class UserController extends Controller
         return response()->json($user, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $uuid)
     {
-        $user = User::find($id);
+        $user = User::where('uuid', $uuid)->first();
 
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
@@ -78,9 +78,9 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function destroy($id)
+    public function destroy($uuid)
     {
-        $user = User::find($id);
+        $user = User::where('uuid', $uuid)->first();
 
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
