@@ -39,7 +39,7 @@ class UserController extends Controller
 
         $user = User::create([
             'uuid' => Str::uuid(),
-            'name' => $validated['first_name'],
+            'name' => $validated['name'],
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
@@ -61,6 +61,7 @@ class UserController extends Controller
         }
 
         $validated = $request->validate([
+            'name' => 'sometimes|string|max:255',
             'first_name' => 'sometimes|string|max:255',
             'last_name' => 'sometimes|string|max:255',
             'email' => 'sometimes|email|unique:users,email,' . $user->id,
