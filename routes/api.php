@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -21,5 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function () {
-    Route::apiResource('users', UserController::class);
+    // LoginController
+    Route::post('login', [LoginController::class, 'login']);
+
+    // UserController
+    Route::apiResource('users', UserController::class); // RESTful endpoints
 });
