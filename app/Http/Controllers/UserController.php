@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegistrationSuccess;
 
 class UserController extends Controller
 {
@@ -48,6 +50,8 @@ class UserController extends Controller
             'persistent_token' => Str::random(32),
             'user_image' => $request->user_image,
         ]);
+
+        Mail::to($user->email)->send(new RegistrationSuccess($user));
 
         return response()->json($user, 201);
     }
