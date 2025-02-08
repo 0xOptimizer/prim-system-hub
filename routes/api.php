@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -22,8 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function () {
-    // LoginController
-    Route::post('login', [LoginController::class, 'login']);
+    // AuthController
+    Route::prefix('auth')->group(function () {
+        Route::post('login', [AuthController::class, 'login']);
+        Route::post('/token/validate', [AuthController::class, 'validateToken'])->name('api.auth.token.validate');
+    });
 
     // UserController
     Route::apiResource('users', UserController::class); // RESTful endpoints
