@@ -40,7 +40,7 @@ class UserController extends Controller
 
         $user = User::create([
             'uuid' => Str::uuid(),
-            'name' => $validated['name'],
+            'name' => $request->name,
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
