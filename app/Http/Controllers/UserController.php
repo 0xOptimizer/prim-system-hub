@@ -36,11 +36,44 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|confirmed',
             'user_type' => 'required|string',
+            'name' => 'sometimes|string|unique:users,name|max:255',
         ]);
+
+        if (empty($request->name)) {
+            $firstName = trim($validated['first_name']);
+            $lastName = trim($validated['last_name']);
+
+            $firstNamePart = mb_substr($firstName, 0, 8, 'UTF-8');
+            $firstNamePart = str_replace('.', '_', $firstNamePart);
+            
+            $lastNamePart = mb_substr($lastName, 0, 8, 'UTF-8');
+            $lastNamePart = str_replace('.', '_', $lastNamePart);
+
+            $baseUsername = strtolower($firstNamePart . '.' . $lastNamePart);
+            $username = null;
+
+            for ($i = 0; $i < 10; $i++) {
+                $randomNumber = str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT);
+                $candidate = $baseUsername . '.' . $randomNumber;
+
+                if (!User::where('name', $candidate)->exists()) {
+                    $username = $candidate;
+                    break;
+                }
+            }
+
+            if (!$username) {
+                return response()->json([
+                    'error' => 'Could not generate a unique username after 10 attempts. Please provide a username.'
+                ], 422);
+            }
+        } else {
+            $username = $validated['name'];
+        }
 
         $user = User::create([
             'uuid' => Str::uuid(),
-            'name' => $request->name,
+            'name' => $username,
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
