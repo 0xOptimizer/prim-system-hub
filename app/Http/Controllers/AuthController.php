@@ -119,4 +119,8 @@ class AuthController extends Controller
 
         return response()->json($responseData);
     }
+    // public function easterEgg(Request $request)
+    // {
+    //     return true;
+    // }
 }
