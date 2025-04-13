@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\AIController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 
@@ -30,4 +31,9 @@ Route::prefix('v1')->group(function () {
 
     // UserController
     Route::apiResource('users', UserController::class); // RESTful endpoints
+
+    // AI
+    Route::prefix('ai')->group(function () {
+        Route::post('convert/request', [AIController::class, 'getChatResponse'])->name('api.ai.convert.request');
+    });
 });
