@@ -72,7 +72,8 @@ class AIController extends Controller
         foreach ($codes as $index => $code) {
             $filename = 'ai-code/' . Str::uuid() . "-solution{$index}." . $ext;
             Storage::disk('local')->put($filename, $code);
-            $fileUrls[] = route('ai.download', ['filename' => basename($filename)]);
+            $fileUrls[] = '';
+            // $fileUrls[] = route('ai.download', ['filename' => basename($filename)]);
         }
 
         return response()->json([
