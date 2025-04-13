@@ -16,3 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/ai/download/{filename}', function ($filename) {
+    $path = storage_path('app/ai-code/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    return response()->download($path);
+})->name('ai.download');
