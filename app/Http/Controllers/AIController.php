@@ -44,11 +44,10 @@ class AIController extends Controller
         ]];
 
         $response = $this->claudeAIService->getResponse($messages);
-        return response()->json($response);
         $content = json_decode($response['content'][0]['text'], true);
 
         if (!$content || !isset($content['codes']) || !is_array($content['codes']) || count($content['codes']) !== 3) {
-            // return response()->json(["error" => "Unable to recognize pseudocode."], 400);
+            return response()->json(["error" => "Unable to recognize pseudocode."], 400);
         }
 
         $codes = $content['codes'];
@@ -67,20 +66,42 @@ class AIController extends Controller
         ];
 
         $ext = $extensions[$lang] ?? 'txt';
-
-        $fileUrls = [];
-        foreach ($codes as $index => $code) {
-            $filename = 'ai-code/' . Str::uuid() . "-solution{$index}." . $ext;
-            Storage::disk('local')->put($filename, $code);
-            $fileUrls[] = '';
-            // $fileUrls[] = route('ai.download', ['filename' => basename($filename)]);
+        $downloadUrls = [];
+        $basePath = storage_path('app/ai-code');
+        if (!file_exists($basePath)) {
+            mkdir($basePath, 0777, true);
         }
+
+        $combinedZipPath = $basePath . '/' . Str::uuid() . '_all.zip';
+        $combinedZip = new \ZipArchive();
+        $combinedZip->open($combinedZipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+
+        foreach ($codes as $index => $code) {
+            $filename = Str::uuid() . "_solution{$index}.zip";
+            $zipPath = $basePath . '/' . $filename;
+
+            $zip = new \ZipArchive();
+            $zip->open($zipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+            $zip->addFromString("solution{$index}." . $ext, $code);
+            $zip->addFromString("test_cases." . $ext, $testCases);
+            $zip->close();
+
+            $downloadUrls[] = route('ai.download', ['filename' => $filename]);
+
+            $combinedZip->addFromString("solution{$index}." . $ext, $code);
+        }
+
+        $combinedZip->addFromString("test_cases." . $ext, $testCases);
+        $combinedZip->close();
+
+        $combinedDownloadUrl = route('ai.download', ['filename' => basename($combinedZipPath)]);
 
         return response()->json([
             'codes' => $codes,
             'test_cases' => $testCases,
             'language' => $content['language'],
-            'download_urls' => $fileUrls
+            'download_urls' => $downloadUrls,
+            'download_all_url' => $combinedDownloadUrl
         ]);
     }
 }
