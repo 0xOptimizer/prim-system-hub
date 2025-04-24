@@ -21,7 +21,7 @@ class AIController extends Controller
     public function getChatResponse(Request $request)
     {
         $speech = $request->input('speech');
-        $language = $request->input('language');
+        $language = $request->input('language') ?? 'python';
 
         $limitations = "
             1. The code must be syntactically correct and runnable in the specified language.
