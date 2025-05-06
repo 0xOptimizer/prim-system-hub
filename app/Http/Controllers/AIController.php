@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ai;
+use App\Models\AiFile;
+use App\Models\AiResponse;
+use App\Models\AiUsage;
 
 use App\Services\ClaudeAIService;
 
