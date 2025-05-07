@@ -34,7 +34,7 @@ class RoomController extends Controller
         return response()->json($room, 201);
     }
 
-    public function show_all()
+    public function show_all(Request $request)
     {
         $validated = $request->validate([
             'user_uuid' => 'required|string|max:255'
