@@ -11,7 +11,8 @@ class RoomController extends Controller
 {
     public function index()
     {
-        return Room::all();
+        $rooms = Room::all();
+        return response()->json($rooms);
     }
 
     public function create(Request $request)
@@ -37,7 +38,7 @@ class RoomController extends Controller
             'created_by' => $validated['user_uuid'],
         ]);
 
-        return response()->json($room, 201);
+        return response()->json($room);
     }
 
     public function show_all(Request $request)

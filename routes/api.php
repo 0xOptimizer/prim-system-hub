@@ -42,9 +42,6 @@ Route::prefix('v1')->group(function () {
     Route::prefix('rooms')->group(function () {
         Route::post('/show/all', [RoomController::class, 'show_all'])->name('api.rooms.show_all');
         Route::post('/create', [RoomController::class, 'create'])->name('api.rooms.create');
-        Route::get('/{uuid}', [RoomController::class, 'show'])->name('api.rooms.show');
-        Route::put('/{uuid}', [RoomController::class, 'update'])->name('api.rooms.update');
-        Route::delete('/{uuid}', [RoomController::class, 'destroy'])->name('api.rooms.destroy');
         Route::get('/{uuid}/user-count', [RoomController::class, 'userCount'])->name('api.rooms.user.count');
     });
 });
