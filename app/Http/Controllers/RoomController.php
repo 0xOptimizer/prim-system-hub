@@ -52,6 +52,23 @@ class RoomController extends Controller
         return response()->json($room);
     }
 
+    public function join(Request $request)
+    {
+        $validated = $request->validate([
+            'user_uuid' => 'required|string|exists:users,uuid'
+        ]);
+
+        $room = Room::where('uuid', $roomUuid)->firstOrFail();
+        $user = User::where('uuid', $validated['user_uuid'])->firstOrFail();
+
+        if (!$room->users()->where('users.uuid', $user->uuid)->exists()) {
+            $room->users()->attach($user->uuid);
+        }
+
+        return response()->json(['message' => 'User joined the room']);
+    }
+
+
     public function show_all(Request $request)
     {
         $validated = $request->validate([

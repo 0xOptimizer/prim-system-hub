@@ -42,6 +42,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('rooms')->group(function () {
         Route::post('/show/all', [RoomController::class, 'show_all'])->name('api.rooms.show_all');
         Route::post('/create', [RoomController::class, 'create'])->name('api.rooms.create');
+        Route::post('/join', [RoomController::class, 'join'])->name('api.rooms.join');
         Route::get('/{uuid}/user-count', [RoomController::class, 'userCount'])->name('api.rooms.user.count');
     });
 });
