@@ -39,7 +39,7 @@ Route::prefix('v1')->group(function () {
 
     // Room Controller
     Route::prefix('rooms')->group(function () {
-        Route::get('/', [RoomController::class, 'index'])->name('api.rooms.index');
+        Route::get('/', [RoomController::class, 'index'])->name('api.rooms.show_all');
         Route::post('/', [RoomController::class, 'store'])->name('api.rooms.store');
         Route::get('/{uuid}', [RoomController::class, 'show'])->name('api.rooms.show');
         Route::put('/{uuid}', [RoomController::class, 'update'])->name('api.rooms.update');

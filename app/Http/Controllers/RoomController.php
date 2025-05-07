@@ -34,6 +34,16 @@ class RoomController extends Controller
         return response()->json($room, 201);
     }
 
+    public function show_all()
+    {
+        $validated = $request->validate([
+            'user_uuid' => 'required|string|max:255'
+        ]);
+
+        $rooms = Room::where('created_by', $validated['user_uuid'])->get();
+        return response()->json($rooms);
+    }
+
     public function show($uuid)
     {
         return Room::where('uuid', $uuid)->firstOrFail();
