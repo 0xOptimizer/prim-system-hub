@@ -23,12 +23,20 @@ class RoomController extends Controller
             'user_uuid' => 'required|string|max:255'
         ]);
 
-        $code = Str::random(4, '0123456789abcdef0123456789');
-        while (Room::where('code', $code)->exists()) {
-            $code = Str::random(4, '0123456789abcdef0123456789');
-        }
-        
-        $uuid = '#' . Str::random(4, '0123456789abcdef0123456789');
+        $hexChars = array_merge(
+            array_fill(0, 3, str_split('0123456789')),
+            array_fill(0, 1, str_split('ABCDEF'))
+        );
+        $hexChars = array_merge(...$hexChars);        
+
+        do {
+            $code = '';
+            for ($i = 0; $i < 4; $i++) {
+                $code .= $hexChars[random_int(0, count($hexChars) - 1)];
+            }
+        } while (Room::where('code', $code)->exists());
+
+        $uuid = '#' . $code;
 
         $room = Room::create([
             'uuid' => $uuid,
