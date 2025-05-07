@@ -56,17 +56,20 @@ class RoomController extends Controller
     {
         $validated = $request->validate([
             'user_uuid' => 'required|string|exists:users,uuid',
-            'room_uuid' => 'required|string|exists:rooms,uuid'
+            'code' => 'required|string|size:5|exists:rooms,code'
         ]);
 
-        $room = Room::where('uuid', $validated['room_uuid'])->firstOrFail();
-        $user = User::where('uuid', $validated['user_uuid'])->firstOrFail();
+        $room = Room::where('code', $validated['code'])->firstOrFail();
+        $user = \App\Models\User::where('uuid', $validated['user_uuid'])->firstOrFail();
 
         if (!$room->users()->where('users.uuid', $user->uuid)->exists()) {
             $room->users()->attach($user->uuid);
         }
 
-        return response()->json(['message' => 'User joined the room']);
+        return response()->json([
+            'message' => 'User joined the room',
+            'uuid' => $room->uuid
+        ]);
     }
 
     public function show_all(Request $request)
