@@ -55,10 +55,11 @@ class RoomController extends Controller
     public function join(Request $request)
     {
         $validated = $request->validate([
-            'user_uuid' => 'required|string|exists:users,uuid'
+            'user_uuid' => 'required|string|exists:users,uuid',
+            'room_uuid' => 'required|string|exists:rooms,uuid'
         ]);
 
-        $room = Room::where('uuid', $roomUuid)->firstOrFail();
+        $room = Room::where('uuid', $validated['room_uuid'])->firstOrFail();
         $user = User::where('uuid', $validated['user_uuid'])->firstOrFail();
 
         if (!$room->users()->where('users.uuid', $user->uuid)->exists()) {
@@ -67,7 +68,6 @@ class RoomController extends Controller
 
         return response()->json(['message' => 'User joined the room']);
     }
-
 
     public function show_all(Request $request)
     {
