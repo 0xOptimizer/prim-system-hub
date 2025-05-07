@@ -17,18 +17,24 @@ class RoomController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255'
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
+            'user_uuid' => 'required|string|max:255'
         ]);
 
         $code = Str::random(4, '0123456789abcdef0123456789');
         while (Room::where('code', $code)->exists()) {
             $code = Str::random(4, '0123456789abcdef0123456789');
         }
+        
+        $uuid = '#' . Str::random(4, '0123456789abcdef0123456789');
 
         $room = Room::create([
-            'uuid' => (string) Str::uuid(),
+            'uuid' => $uuid,
             'code' => $code,
-            'name' => $validated['name']
+            'name' => $validated['name'],
+            'description' => $validated['description'],
+            'created_by' => $validated['user_uuid'],
         ]);
 
         return response()->json($room, 201);
