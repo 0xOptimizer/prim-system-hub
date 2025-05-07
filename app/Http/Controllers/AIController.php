@@ -27,6 +27,7 @@ class AIController extends Controller
         $speech = $request->input('speech');
         $language = $request->input('language') ?? 'python';
         $room_code = $request->input('room_code') ?? null;
+        $user_uuid = $request->input('user_uuid') ?? null;
 
         $limitations = "1. The code must be syntactically correct and runnable in the specified language.
                         2. The code must not contain any external libraries or dependencies unless explicitly stated.
@@ -124,7 +125,7 @@ class AIController extends Controller
             'path' => $combinedZipPath,
             'type' => 'combined',
             'room_code' => $room_code,
-            'created_by' => auth()->user() ? auth()->user()->uuid : null
+            'created_by' => $user_uuid
         ]);
 
         AiUsage::create([
@@ -132,7 +133,7 @@ class AIController extends Controller
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
             'action' => 'generate',
-            'created_by' => auth()->user() ? auth()->user()->uuid : null,
+            'created_by' => $user_uuid
         ]);
 
         return response()->json([
