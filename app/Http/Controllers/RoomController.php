@@ -36,11 +36,11 @@ class RoomController extends Controller
             }
         } while (Room::where('code', $code)->exists());
 
-        $uuid = '#' . $code;
+        $readable_code = '#' . $code;
 
         $room = Room::create([
-            'uuid' => $uuid,
-            'code' => $code,
+            'uuid' => Str::uuid(),
+            'code' => $readable_code,
             'name' => $validated['name'],
             'description' => $validated['description'],
             'created_by' => $validated['user_uuid'],

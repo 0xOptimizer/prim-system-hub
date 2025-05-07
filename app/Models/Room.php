@@ -12,6 +12,7 @@ class Room extends Model
 
     protected $fillable = [
         'uuid',
+        'code',
         'name',
         'description',
         'created_by'
