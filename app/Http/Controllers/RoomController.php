@@ -46,6 +46,9 @@ class RoomController extends Controller
             'created_by' => $validated['user_uuid'],
         ]);
 
+        $user = User::where('uuid', $validated['user_uuid'])->firstOrFail();
+        $room->users()->attach($user->uuid);
+
         return response()->json($room);
     }
 
