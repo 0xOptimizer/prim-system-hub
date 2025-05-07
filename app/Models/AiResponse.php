@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class AiResponse extends Model
 {
-    protected $fillable = ['uuid', 'prompt', 'language', 'codes', 'test_cases'];
+    protected $fillable = ['uuid', 'prompt', 'language', 'codes', 'test_cases', 'created_by'];
 
     protected $casts = ['codes' => 'array'];
 

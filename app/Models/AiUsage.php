@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class AiUsage extends Model
 {
-    protected $fillable = ['ai_response_id', 'ip', 'user_agent', 'action'];
+    protected $fillable = ['ai_response_id', 'ip', 'user_agent', 'action', 'created_by'];
 
     public $table = 'ai_usages';
 

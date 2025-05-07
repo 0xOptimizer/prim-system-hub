@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class AiFile extends Model
 {
-    protected $fillable = ['ai_response_id', 'filename', 'path', 'type'];
+    protected $fillable = ['ai_response_id', 'filename', 'path', 'type', 'room_code', 'created_by'];
 
     public $table = 'ai_files';
 

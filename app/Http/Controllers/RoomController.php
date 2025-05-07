@@ -20,8 +20,14 @@ class RoomController extends Controller
             'name' => 'required|string|max:255'
         ]);
 
+        $code = Str::random(4, '0123456789abcdef0123456789');
+        while (Room::where('code', $code)->exists()) {
+            $code = Str::random(4, '0123456789abcdef0123456789');
+        }
+
         $room = Room::create([
             'uuid' => (string) Str::uuid(),
+            'code' => $code,
             'name' => $validated['name']
         ]);
 
