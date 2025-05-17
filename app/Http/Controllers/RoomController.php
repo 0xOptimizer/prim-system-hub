@@ -80,6 +80,17 @@ class RoomController extends Controller
         ]);
 
         $rooms = Room::where('created_by', $validated['user_uuid'])->get();
+
+        $rooms->transform(function ($room) {
+            $lastChat = RoomChat::where('room_uuid', $room->uuid)
+                ->latest('created_at')
+                ->first();
+
+            $room->last_active = $lastChat ? $lastChat->created_at->toDateTimeString() : null;
+            $room->user_count = RoomChat::where('room_uuid', $room->uuid)->distinct('user_uuid')->count('user_uuid');
+            return $room;
+        });
+
         return response()->json($rooms);
     }
 
