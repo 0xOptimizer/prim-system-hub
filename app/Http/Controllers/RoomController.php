@@ -139,6 +139,7 @@ class RoomController extends Controller
             'room_uuid' => 'required|exists:rooms,uuid',
             'user_uuid' => 'required|exists:users,uuid',
             'chat' => 'required|string',
+            'chat_type' => 'required|string',
         ]);
 
         return RoomChat::create($validated);
