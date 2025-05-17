@@ -44,5 +44,11 @@ Route::prefix('v1')->group(function () {
         Route::post('/create', [RoomController::class, 'create'])->name('api.rooms.create');
         Route::post('/join', [RoomController::class, 'join'])->name('api.rooms.join');
         Route::get('/{uuid}/user-count', [RoomController::class, 'userCount'])->name('api.rooms.user.count');
+
+        // Chat
+        Route::prefix('chat')->group(function () {
+            Route::post('/chat', [RoomController::class, 'chatShowAll'])->name('api.rooms.chat');
+            Route::post('/chat/send', [RoomController::class, 'chatCreate'])->name('api.rooms.chat.send');
+        });
     });
 });

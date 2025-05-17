@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Room;
+use App\Models\RoomChat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -131,4 +132,41 @@ class RoomController extends Controller
 
         return response()->json($rooms);
     }
+
+    public function chatCreate(Request $request)
+    {
+        $validated = $request->validate([
+            'room_uuid' => 'required|exists:rooms,uuid',
+            'user_uuid' => 'required|exists:users,uuid',
+            'chat' => 'required|string',
+        ]);
+
+        return RoomChat::create($validated);
+    }
+
+    public function chatShowAll(Request $request)
+    {
+        $validated = $request->validate([
+            'room_uuid' => 'required|exists:rooms,uuid',
+        ]);
+
+        $chats = RoomChat::with(['user:id,uuid,name,user_type,first_name,last_name,user_image'])
+            ->where('room_uuid', $validated['room_uuid'])
+            ->whereNull('deleted_at')
+            ->get();
+
+        return response()->json($chats);
+    }
+
+    public function chatDestroy(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required|exists:room_chat,id',
+        ]);
+
+        RoomChat::where('id', $validated['id'])->delete();
+
+        return response()->noContent();
+    }
+
 }
