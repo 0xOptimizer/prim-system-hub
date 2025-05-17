@@ -47,8 +47,8 @@ Route::prefix('v1')->group(function () {
 
         // Chat
         Route::prefix('chat')->group(function () {
-            Route::post('/chat', [RoomController::class, 'chatShowAll'])->name('api.rooms.chat');
-            Route::post('/chat/send', [RoomController::class, 'chatCreate'])->name('api.rooms.chat.send');
+            Route::post('/show', [RoomController::class, 'chatShowAll'])->name('api.rooms.chat');
+            Route::post('/create', [RoomController::class, 'chatCreate'])->name('api.rooms.chat.send');
         });
     });
 });
