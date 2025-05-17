@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\RoomController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,3 +26,9 @@ Route::get('/ai/download/{filename}', function ($filename) {
     }
     return response()->download($path);
 })->name('ai.download');
+
+// Chat
+Route::prefix('chat')->group(function () {
+    Route::post('/chat', [RoomController::class, 'chatShowAll'])->name('api.rooms.chat');
+    Route::post('/chat/send', [RoomController::class, 'chatCreate'])->name('api.rooms.chat.send');
+});
