@@ -17,6 +17,11 @@ class TelemetriesController extends Controller
         return response()->json(VisitorLog::groupByPeriod('daily'));
     }
 
+    public function weekly(Request $request)
+    {
+        return response()->json(VisitorLog::groupByPeriod('weekly'));
+    }
+
     public function monthly(Request $request)
     {
         return response()->json(VisitorLog::groupByPeriod('monthly'));
