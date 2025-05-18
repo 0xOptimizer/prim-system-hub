@@ -114,7 +114,9 @@ class RoomController extends Controller
             'user_uuid' => 'required|string|max:255'
         ]);
 
-        $rooms = Room::where('created_by', $validated['user_uuid'])->get();
+        $user = User::where('uuid', $validated['user_uuid'])->firstOrFail();
+
+        $rooms = $user->rooms()->get();
 
         $rooms->transform(function ($room) {
             $lastChat = RoomChat::where('room_uuid', $room->uuid)
