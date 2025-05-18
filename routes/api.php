@@ -7,6 +7,7 @@ use App\Http\Controllers\AIController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\TelemetriesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,4 +52,12 @@ Route::prefix('v1')->group(function () {
             Route::post('/create', [RoomController::class, 'chatCreate'])->name('api.rooms.chat.send');
         });
     });
+
+    // Telemetries
+    Route::prefix('telemetries')->group(function () {
+        Route::get('/users/hourly', [TelemetriesController::class, 'hourly']);
+        Route::get('/users/daily', [TelemetriesController::class, 'daily']);
+        Route::get('/users/monthly', [TelemetriesController::class, 'monthly']);
+    });
+
 });
