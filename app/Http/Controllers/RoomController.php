@@ -64,7 +64,7 @@ class RoomController extends Controller
         $user = User::where('uuid', $validated['user_uuid'])->firstOrFail();
 
         if (!$room->users()->where('users.uuid', $user->uuid)->exists()) {
-            $room->users()->attach($user->uuid);
+            $room->users()->attach([$user->uuid => ['room_uuid' => $room->uuid]]);
         }
 
         return response()->json([
