@@ -32,3 +32,7 @@ Route::prefix('chat')->group(function () {
     Route::post('/chat', [RoomController::class, 'chatShowAll'])->name('api.rooms.chat');
     Route::post('/chat/send', [RoomController::class, 'chatCreate'])->name('api.rooms.chat.send');
 });
+
+Route::get('/reset-password/{token}', function ($token) {
+    return view('auth.reset-password', ['token' => $token]);
+})->name('password.reset');
