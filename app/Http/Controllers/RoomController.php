@@ -55,19 +55,51 @@ class RoomController extends Controller
 
     public function join(Request $request)
     {
-        $validated = $request->validate([
-            'user_uuid' => 'required|string|exists:users,uuid',
-            'code' => 'required|string|size:5'
-        ]);
+        try {
+            $validated = $request->validate([
+                'user_uuid' => 'required|string|exists:users,uuid',
+                'code' => 'required|string|size:5'
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'error' => 'Validation failed',
+                'messages' => $e->errors()
+            ], 422);
+        }
 
-        $validated['code'] = strtoupper(ltrim($validated['code'], '#'));
-        $room = Room::where('code', '#' . $validated['code'])->firstOrFail();
+        try {
+            $validated['code'] = strtoupper(ltrim($validated['code'], '#'));
+            $room = Room::where('code', '#' . $validated['code'])->firstOrFail();
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Room not found',
+                'code' => '#' . $validated['code']
+            ], 404);
+        }
 
-        $room = Room::where('code', $validated['code'])->firstOrFail();
-        $user = User::where('uuid', $validated['user_uuid'])->firstOrFail();
+        try {
+            $user = User::where('uuid', $validated['user_uuid'])->firstOrFail();
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'User not found',
+                'uuid' => $validated['user_uuid']
+            ], 404);
+        }
 
-        if (!$room->users()->where('users.uuid', $user->uuid)->exists()) {
-            $room->users()->attach([$user->uuid => ['room_uuid' => $room->uuid]]);
+        try {
+            if (!$room->users()->where('users.uuid', $user->uuid)->exists()) {
+                $room->users()->attach($user->uuid);
+            } else {
+                return response()->json([
+                    'message' => 'User already in the room',
+                    'uuid' => $room->uuid
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to attach user to room',
+                'details' => $e->getMessage()
+            ], 500);
         }
 
         return response()->json([
