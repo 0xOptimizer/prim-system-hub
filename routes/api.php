@@ -64,4 +64,10 @@ Route::prefix('v1')->group(function () {
         Route::get('/overview/counts', [TelemetriesController::class, 'overviewCounts']);
     });
 
+    // Account Recovery
+    Route::prefix('recover')->group(function () {
+        Route::post('request', [UserController::class, 'sendRecoveryLink']);
+        Route::post('sreset', [UserController::class, 'resetPassword']);
+    });
+
 });
