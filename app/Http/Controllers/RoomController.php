@@ -57,8 +57,11 @@ class RoomController extends Controller
     {
         $validated = $request->validate([
             'user_uuid' => 'required|string|exists:users,uuid',
-            'code' => 'required|string|size:5|exists:rooms,code'
+            'code' => 'required|string|size:5'
         ]);
+
+        $validated['code'] = strtoupper(ltrim($validated['code'], '#'));
+        $room = Room::where('code', '#' . $validated['code'])->firstOrFail();
 
         $room = Room::where('code', $validated['code'])->firstOrFail();
         $user = User::where('uuid', $validated['user_uuid'])->firstOrFail();
