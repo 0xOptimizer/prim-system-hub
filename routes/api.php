@@ -55,10 +55,13 @@ Route::prefix('v1')->group(function () {
 
     // Telemetries
     Route::prefix('telemetries')->group(function () {
-        Route::get('/users/hourly', [TelemetriesController::class, 'hourly']);
-        Route::get('/users/daily', [TelemetriesController::class, 'daily']);
-        Route::get('/users/weekly', [TelemetriesController::class, 'weekly']);
-        Route::get('/users/monthly', [TelemetriesController::class, 'monthly']);
+        Route::prefix('users')->group(function () {
+            Route::get('/users/hourly', [TelemetriesController::class, 'hourly']);
+            Route::get('/users/daily', [TelemetriesController::class, 'daily']);
+            Route::get('/users/weekly', [TelemetriesController::class, 'weekly']);
+            Route::get('/users/monthly', [TelemetriesController::class, 'monthly']);
+        });
+        Route::get('/overview/counts', [TelemetriesController::class, 'overviewCounts']);
     });
 
 });

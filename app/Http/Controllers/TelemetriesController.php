@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\AiFile;
+use App\Models\AiResponse;
+use App\Models\AiUsage;
+use App\Models\Room;
+use App\Models\RoomChat;
+use App\Models\User;
 use App\Models\VisitorLog;
 
 class TelemetriesController extends Controller
@@ -26,4 +32,17 @@ class TelemetriesController extends Controller
     {
         return response()->json(VisitorLog::groupByPeriod('monthly'));
     }
+
+    public function overviewCounts()
+    {
+        return response()->json([
+            'users' => User::count(),
+            'rooms' => Room::count(),
+            'room_chats' => RoomChat::count(),
+            'ai_files' => AiFile::count(),
+            'ai_responses' => AiResponse::count(),
+            'ai_usages' => AiUsage::count(),
+        ]);
+    }
+
 }
