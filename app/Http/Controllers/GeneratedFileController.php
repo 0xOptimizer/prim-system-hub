@@ -7,7 +7,7 @@ use App\Models\AiFile;
 use App\Models\Room;
 use Illuminate\Http\Request;
 
-class FileController extends Controller
+class GeneratedFileController extends Controller
 {
     public function listUserFiles($uuid)
     {

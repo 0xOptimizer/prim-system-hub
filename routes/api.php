@@ -8,7 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TelemetriesController;
-use App\Http\Controllers\FileController;
+use App\Http\Controllers\GeneratedFileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,9 +73,9 @@ Route::prefix('v1')->group(function () {
 
     // Files
     Route::prefix('files')->group(function () {
-        Route::get('/user/{uuid}', [FileController::class, 'listUserFiles']);
-        Route::get('/user/{uuid}/total', [FileController::class, 'totalUserFiles']);
-        Route::get('/{id}', [FileController::class, 'getFileDetails']);
-        Route::delete('/{id}', [FileController::class, 'deleteFile']);
+        Route::get('/user/{uuid}', [GeneratedFileController::class, 'listUserFiles']);
+        Route::get('/user/{uuid}/total', [GeneratedFileController::class, 'totalUserFiles']);
+        Route::get('/{id}', [GeneratedFileController::class, 'getFileDetails']);
+        Route::delete('/{id}', [GeneratedFileController::class, 'deleteFile']);
     });
 });
