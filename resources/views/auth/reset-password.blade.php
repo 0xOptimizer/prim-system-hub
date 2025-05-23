@@ -215,8 +215,8 @@
     });
     </script>
 </head>
-<body>
-    <h2>Reset Password</h2>
+<body class="p-5">
+    <h2 class="text-gradient-primary">Reset Password</h2>
 
     @if (session('status'))
         <p style="color: green;">{{ session('status') }}</p>
@@ -238,16 +238,16 @@
 
         <div>
             <label for="password">New Password</label><br>
-            <input type="password" name="password" id="password" required>
+            <input type="password" name="password" id="password" class="form-control" required>
         </div>
 
         <div>
             <label for="password_confirmation">Confirm Password</label><br>
-            <input type="password" name="password_confirmation" id="password_confirmation" required>
+            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
         </div>
 
-        <div>
-            <button type="submit">Reset Password</button>
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Reset Password</button>
         </div>
     </form>
 </body>
