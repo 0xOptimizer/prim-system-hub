@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TelemetriesController;
+use App\Http\Controllers\FileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,4 +71,11 @@ Route::prefix('v1')->group(function () {
         Route::post('sreset', [UserController::class, 'resetPassword']);
     });
 
+    // Files
+    Route::prefix('files')->group(function () {
+        Route::get('/user/{uuid}', [FileController::class, 'listUserFiles']);
+        Route::get('/user/{uuid}/total', [FileController::class, 'totalUserFiles']);
+        Route::get('/{id}', [FileController::class, 'getFileDetails']);
+        Route::delete('/{id}', [FileController::class, 'deleteFile']);
+    });
 });
