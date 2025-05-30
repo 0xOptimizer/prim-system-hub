@@ -28,6 +28,7 @@ class AIController extends Controller
         $language = $request->input('language') ?? 'python';
         $room_code = $request->input('room_code') ?? null;
         $user_uuid = $request->input('user_uuid') ?? null;
+        $difficulty = $request->input('difficulty') ?? 'beginner';
 
         $limitations = "1. The code must be syntactically correct and runnable in the specified language.
                         2. The code must not contain any external libraries or dependencies unless explicitly stated.
@@ -40,7 +41,7 @@ class AIController extends Controller
 
         $messages = [[
             "role" => "user",
-            "content" => "You are a pseudocode-to-code converter. Convert the following pseudocode to code three separate times (each time, it will be a different solution for the specified problem) in the specified language: {$speech}. The language is {$language}. You must provide test cases that can pass all the generated codes, including constants for the simple function so that the user can just run the code to test. You have the following limitations that you must strictly follow: {$limitations}. If any of the limitations are reached, you must just respond with \"Unable to recognize pseudocode.\". Your response should strictly be in this JSON format:
+            "content" => "You are a pseudocode-to-code converter. Convert the following pseudocode to code three separate times (each time, it will be a different solution for the specified problem) in the specified language: {$speech}. The language is {$language}. You must provide test cases that can pass all the generated codes, including constants for the simple function so that the user can just run the code to test. The difficulty is {$difficulty}. You must adapt your generated code and test cases depending on the difficulty level, where a beginner is a beginner level of understanding similar to a grade 1st to 5th, an intermediate is grade 6th to college, and an expert is a working professional. You have the following limitations that you must strictly follow: {$limitations}. If any of the limitations are reached, you must just respond with \"Unable to recognize pseudocode.\". Your response should strictly be in this JSON format:
             {
                 \"codes\": [\"<code_1>\", \"<code_2>\", \"<code_3>\"],
                 \"test_cases\": \"<test_cases>\",
