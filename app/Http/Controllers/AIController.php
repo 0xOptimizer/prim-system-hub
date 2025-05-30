@@ -53,7 +53,7 @@ class AIController extends Controller
         $content = json_decode($response['content'][0]['text'], true);
 
         if (!$content || !isset($content['codes']) || !is_array($content['codes']) || count($content['codes']) !== 3) {
-            return response()->json(["error" => "Unable to recognize pseudocode."], 400);
+            return response()->json(["error" => $content], 400);
         }
 
         $codes = $content['codes'];
